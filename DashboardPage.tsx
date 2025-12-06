@@ -470,26 +470,45 @@ const DashboardPage: React.FC = () => {
     const confirmDeleteMember = async () => {
         if (!memberToDelete) return;
 
-        const { error: profileError } = await supabase
-            .from('profiles')
-            .delete()
-            .eq('id', memberToDelete.id);
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                alert('You must be logged in to delete team members.');
+                return;
+            }
 
-        if (profileError) {
-            alert('Failed to delete team member: ' + profileError.message);
-            return;
+            const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://mogdizazsjmlrtdsqxfl.supabase.co';
+            const apiUrl = `${supabaseUrl}/functions/v1/delete-team-member`;
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${session.access_token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId: memberToDelete.id })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                alert('Failed to delete team member: ' + (result.error || 'Unknown error'));
+                return;
+            }
+
+            await logAction('team_member_deleted', {
+                member_email: memberToDelete.email,
+                member_name: memberToDelete.full_name,
+                member_role: memberToDelete.role
+            });
+
+            alert('Team member deleted successfully!');
+            setShowDeleteMemberModal(false);
+            setMemberToDelete(null);
+            fetchTeamMembers();
+        } catch (error: any) {
+            console.error('Delete member error:', error);
+            alert('Failed to delete team member: ' + error.message);
         }
-
-        await logAction('team_member_deleted', {
-            member_email: memberToDelete.email,
-            member_name: memberToDelete.full_name,
-            member_role: memberToDelete.role
-        });
-
-        alert('Team member deleted successfully!');
-        setShowDeleteMemberModal(false);
-        setMemberToDelete(null);
-        fetchTeamMembers();
     };
 
     if (!user) {

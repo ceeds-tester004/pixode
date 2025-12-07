@@ -8,8 +8,7 @@ import ProjectsPage from './PortfolioPage';
 import ContactPage from './ContactPage';
 import ScrollToTop from './ScrollToTop';
 import PartnershipsPage from './PartnershipsPage';
-import LiveSupportChat from './LiveSupportChat'; 
-import DashboardPage from './DashboardPage';
+import LiveSupportChat from './LiveSupportChat';
 import LoginPage from './LoginPage';
 import ProjectDetailPage from './ProjectDetailPage';
 
@@ -28,7 +27,6 @@ const App: React.FC = () => {
             <Route path="/partnerships" element={<PartnershipsPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
           </Routes>
         </main>
         <Footer />

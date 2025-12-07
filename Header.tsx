@@ -71,9 +71,7 @@ const Header: React.FC = () => {
        }
     }, [location.pathname]); // Update when route changes
 
-    // Hide Header on Dashboard and Login Pages
-    // MOVED: This check must happen AFTER all hooks are called to prevent React Error #300
-    if (location.pathname.startsWith('/dashboard') || location.pathname === '/login') {
+    if (location.pathname === '/login') {
         return null;
     }
 

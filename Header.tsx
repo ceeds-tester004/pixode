@@ -79,10 +79,9 @@ const Header: React.FC = () => {
         <>
             <header className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-out ${isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>
                 <div className={`flex items-center gap-2 bg-black/30 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl shadow-purple-500/20 transition-all duration-300 ${isScrolled ? 'py-2 px-6' : 'py-3 px-8'}`}>
-                    {/* The Logo now links directly to the Login Page as requested */}
-                    <Link to="/login" className="text-2xl font-bold font-montserrat animate-text-lights flex-shrink-0 transition-transform duration-300 hover:scale-105 mr-4" title="CEO & Employee Login">
+                    <span className="text-2xl font-bold font-montserrat animate-text-lights flex-shrink-0 mr-4">
                         PIXODE
-                    </Link>
+                    </span>
                     
                     <nav ref={navRef} className="hidden md:flex relative items-center space-x-1">
                         {navItems.map((item, index) => (
